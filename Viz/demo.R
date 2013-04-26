@@ -4,6 +4,8 @@
 #    University of Alberta
 # FOR the Edmonton R User's Group!
 
+# Code is CC0 no rights reserved 
+
 # This talk is a live demo without slides
 
 # For this demo you might to run these commands
@@ -12,7 +14,7 @@
 # install.package("gplots")
 # install.package("ggplot2")
 # install.package("corrplot")
-
+X11.options(type="nbcairo")
 # remedial:
 avector <- c(1:100) # make a vector of 1 to 100
 afunction <- function(x) { x * x } # make a function that squares
@@ -73,11 +75,13 @@ image(d,col=colors)
 # add some contours to make the highpoints noticable
 contour(d, add=T, nlevels=ncol/5)
 # Do you see where the sinusoid is now?
-
+plot(v)
 # Ok let's see that on the grid data
 d <- kde2d(u$x, u$y, n = c(500,500))
 image(d,col=colors)
 contour(d, add=T, nlevels=ncol/5)
+
+contour(d, nlevels=ncol/5)
 # See the overlap between the 2 datasets?
 
 # But that's too smooth and touchy feely. 
@@ -94,7 +98,7 @@ ggplot(data.frame(v), aes(v$x,v$y)) + # aes maps
   geom_hex() + # use hex
 scale_fill_continuous(low = "blue", high = "red") # choose a colour range
 # we can use bins
-ggplot(data.frame(u), aes(v$x,v$y)) + 
+ggplot(data.frame(v), aes(v$x,v$y)) + 
   geom_bin2d()
 # now for the integers
 ggplot(data.frame(u), aes(u$x,u$y)) + 
@@ -131,6 +135,7 @@ lines(sapply(walks,min))
 minwalk <- min(sapply(walks,min))
 maxwalk <- max(sapply(walks,max))
 # ylim lets us scale the plot better
+plot(sapply(walks,mean),col="red")
 plot(sapply(walks,mean),col="red",ylim=c(minwalk,maxwalk))
 lines(sapply(walks,median),col="green")
 lines(sapply(walks,mean),col="red")
@@ -157,6 +162,7 @@ plot(c(),xlim=c(1,length(walks)),ylim=c(minwalk,maxwalk),xaxt="n",ylab="Y Values
 #          ‘"s"’: for compatibility with S values ‘"l"’ and ‘"t"’ are
 #          accepted but are equivalent to ‘"s"’: any value other than
 #          ‘"n"’ implies plotting.
+# polygon(c(1,5,10,5,1),c(1,10,1,1,1),col="red")
 
 w <- c()
 w$x <- c(1:length(walks))
@@ -194,6 +200,7 @@ axis(below,c(1:5,10,20,30),c("One","Two","Tree","Four","Five","Ten","Twenty","Th
 library(corrplot)
 # flatten our walks and show a correlation
 corrplot(cor(sapply(walks,function(x){x}),method="spearman"))
+image(cor(sapply(walks,function(x){x}),method="spearman"))
 demo <- c()
 demo$r <- rnorm(100,sd=0.001)
 demo$s <- rnorm(100,sd=0.001)
